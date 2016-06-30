@@ -25,7 +25,9 @@ class MainPage(webapp2.RequestHandler):
 	</head>
 	<body>
 		<form action="/result" method="POST">
+			出発駅：
 			<input type=text name=station_from><br></input>
+			到着駅：
 			<input type=text name=station_to><br></input>
 			<input type=submit value=Search></input>
 		</form>
@@ -51,12 +53,10 @@ class ResultPage(webapp2.RequestHandler):
 
 		for line in js:
 			for index in range(len(line["Stations"]) - 1):
-				E.append(station[index], station[index + 1])
-
+				E.append((line["Stations"][index], line["Stations"][index + 1]))
 		G.add_nodes_from(N)
-		G.add_edges_from(E)
 		
-
+		G.add_edges_from(E)
 		
 		self.response.headers["Content-Type"] = "text/html; charset=utf-8"
 		self.response.out.write("""<html>
@@ -70,14 +70,14 @@ class ResultPage(webapp2.RequestHandler):
 		self.response.out.write(""" から """)
 		self.response.out.write(station_to.encode('utf-8'))
 		self.response.out.write("""　に行く経路は """)
-		self.response.out.write(nx.dijkstra_path(G, station_from, station_to).encode('utf-8'))
+		self.response.out.write(""" <br> """)
+		for line in nx.dijkstra_path(G, station_from, station_to):
+			self.response.out.write(line.encode('utf-8'))
+			self.response.out.write(""" -> """)
 		self.response.out.write("""です。
 			</body>
 			</html>
 		""")
-		
-
-
 
 app = webapp2.WSGIApplication([("/transit", MainPage),
                                ("/result", ResultPage)],

@@ -10,11 +10,5 @@ handlers:
 - url: /transit
   script: main2.app
 
-- url: .*
+- url: /.*
   script: main2.app
-
-libraries:
-- name: webapp2
-  version: latest
-- name: jinja2
-  version: latest
