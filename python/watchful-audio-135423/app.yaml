@@ -1,0 +1,20 @@
+application: watchful-audio-135423
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /wordshuffle
+  script: main.app
+
+- url: /transit
+  script: main2.app
+
+- url: .*
+  script: main2.app
+
+libraries:
+- name: webapp2
+  version: latest
+- name: jinja2
+  version: latest
